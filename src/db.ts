@@ -1,6 +1,6 @@
 import { Pool } from "pg";
 
-const connectionString = 'CONECT_YOUR-DATABASE';
+const connectionString = 'CONECT_YOUR_DATABASE';
 
 const db = new Pool({ connectionString });
 
