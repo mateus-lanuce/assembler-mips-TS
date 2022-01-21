@@ -1,4 +1,4 @@
-# Microserviço de autenticação com Typescript
+# Microserviço de autenticação com Typescript  📡
 
 Este projeto foi desenvolvido para fixar e ampliar meus conhecimentos a cerca do protocolo HTTP, Typescipt e Postgress
 
