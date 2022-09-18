@@ -1,10 +1,23 @@
-class cu {
+import { TemporaryRegister, StorageRegister, OperationCodes, FunctionCodes } from './utils/enums';
+
+
+//usar os enums como enum['valor da string lida'];
+
+class MipsInstructions {
+    protected temporaryRegister = TemporaryRegister;
+    protected storageRegister = StorageRegister;
+    protected opcode = OperationCodes;
+    protected functionCode = FunctionCodes;
+
+    
 
 }
 
 
-
-export class Mips extends cu{
+/**
+ * classe que organiza o codigo.
+ */
+export class MipsAssembler extends MipsInstructions{
 
     private _data: Buffer;
     

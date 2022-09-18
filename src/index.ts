@@ -1,11 +1,11 @@
 import * as fs from "node:fs";
-import { Mips } from "./Mips";
+import { MipsAssembler } from "./Mips";
 
 
 try {
     const data = fs.readFileSync('assembly.txt');
 
-    const mips = new Mips(data);
+    const mips = new MipsAssembler(data);
 
     console.log(mips.labels);
    
