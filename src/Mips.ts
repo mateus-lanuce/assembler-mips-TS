@@ -1,16 +1,44 @@
 import { TemporaryRegister, StorageRegister, OperationCodes, FunctionCodes } from './utils/enums';
 
+type R_Instruction = {
+    opcode: number;
+    rs: number;
+    rt: number;
+    rd: number;
+    shamt: number;
+    funct: number;
+};
 
-//usar os enums como enum['valor da string lida'];
+type I_Instruction = {
+    opcode: number;
+    rt: number;
+    rs: number;
+    immediate: number;
+};
+
+type J_Instruction = {
+    opcode: number;
+    adress: number;
+};
 
 class MipsInstructions {
-    protected temporaryRegister = TemporaryRegister;
-    protected storageRegister = StorageRegister;
-    protected opcode = OperationCodes;
-    protected functionCode = FunctionCodes;
+    protected temporaryRegisters = TemporaryRegister;
+    protected storageRegisters = StorageRegister;
+    protected operationCodes = OperationCodes;
+    protected functionCodes = FunctionCodes;
+    //usar os enums como enum['valor da string lida'];
+    
+    protected r: R_Instruction = { opcode: 0, rs: 0, rt: 0, rd: 0, shamt: 0, funct: 0 };
+    protected i: I_Instruction = { opcode: 0, rs: 0, rt: 0, immediate: 0 };
+    protected j: J_Instruction = { opcode: 0, adress: 0 };
+    
+    resetInstructions() {
+        this.r = { opcode: 0, rs: 0, rt: 0, rd: 0, shamt: 0, funct: 0 };
+        this.i = { opcode: 0, rs: 0, rt: 0, immediate: 0 };
+        this.j = { opcode: 0, adress: 0 };
+    }
 
     
-
 }
 
 
