@@ -8,9 +8,6 @@ class MipsInstructions {
     protected storageRegister = StorageRegister;
     protected opcode = OperationCodes;
     protected functionCode = FunctionCodes;
-
-    
-
 }
 
 
@@ -47,5 +44,4 @@ export class MipsAssembler extends MipsInstructions{
     get labels() {
         return this._labels;
     }
-
 }
