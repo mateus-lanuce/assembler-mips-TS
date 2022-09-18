@@ -9,7 +9,7 @@
     "build": "tsc -p .",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "Edson Alencar",
+  "author": "Edson Alencar e Mateus Lanuce",
   "license": "ISC",
   "devDependencies": {
     "@types/node": "^18.7.18",
