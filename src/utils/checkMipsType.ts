@@ -40,18 +40,24 @@ const operationsI = [
 ];
 const operationsJ = ["j", "jal"];
 
-export function mipsType(comand: string): string {
+export function mipsType(comand: String): string {
   let operation = comand.split(" ");
+  let operationCode = operation.filter((operation) => operation !== "");
+  let pos: number;
+  let type = " ";
 
-  operationsR.forEach((operation) => {
-    if (operation === operation[0]) return "r";
+  if (operationCode[0].includes(":")) pos = 1;
+  else pos = 0;
+
+  operationsR.forEach((code) => {
+    if (code === operationCode[pos]) type = "r";
   });
-  operationsI.forEach((operation) => {
-    if (operation === operation[0]) return "i";
+  operationsI.forEach((code) => {
+    if (code === operationCode[pos]) type = "i";
   });
-  operationsJ.forEach((operation) => {
-    if (operation === operation[0]) return "j";
+  operationsJ.forEach((code) => {
+    if (code === operationCode[pos]) type = "j";
   });
 
-  return "Not defined";
+  return type;
 }
