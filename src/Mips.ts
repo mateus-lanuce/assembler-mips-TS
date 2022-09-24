@@ -51,7 +51,7 @@ export class MipsAssembler extends MipsInstructions{
     
     private _readRows: String[]; //array com as linhas lidas
 
-    private _labels: Array<{label: String; index: number}> = []; //instruçoes L1, L2 labels
+    private _labels: Array<{label: String, content: String, address: Number, index: number}> = []; //instruçoes L1, L2 labels
 
     // private _instructions: String[];
 
@@ -61,11 +61,19 @@ export class MipsAssembler extends MipsInstructions{
     constructor(Data: Buffer) {
         super();
         this._data = Data;
+        let address = 0x40000;
         this._readRows = Data.toString().split('\n');
         this._readRows.forEach((row, index )=> {
-            if(row.includes(':')) this._labels.push({label: row, index});
-        });
+            if(row.includes(':')) {
+                const words = row.split(' ')
+                const label = words[0]
+                let content = row.replace(label, '').trim()
 
+                this._labels.push({label, content, address, index});
+            }
+            
+            address += 0x4;
+        });
     }
     
     get readRows() {

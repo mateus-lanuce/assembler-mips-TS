@@ -30,7 +30,7 @@ function main(fileName: string) {
       console.log(mipsType(row));
     });
 
-    // console.log(mips.labels);
+    console.log(mips.labels);
   } catch (error) {
     console.log(error);
   }
