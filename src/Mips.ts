@@ -1,6 +1,6 @@
 import { TemporaryRegister, StorageRegister, OperationCodes, FunctionCodes } from './utils/enums';
 
-type R_Instruction = {
+export type R_Instruction = {
     opcode: number;
     rs: number;
     rt: number;
@@ -9,14 +9,14 @@ type R_Instruction = {
     funct: number;
 };
 
-type I_Instruction = {
+export type I_Instruction = {
     opcode: number;
     rt: number;
     rs: number;
     immediate: number;
 };
 
-type J_Instruction = {
+export type J_Instruction = {
     opcode: number;
     adress: number;
 };
@@ -68,8 +68,9 @@ export class MipsAssembler extends MipsInstructions{
                 const words = row.split(' ')
                 const label = words[0]
                 let content = row.replace(label, '').trim()
+                let clearLabel = label.split(':').filter((operation) => operation !== "").toString();
 
-                this._labels.push({label, content, address, index});
+                this._labels.push({label:clearLabel, content, address, index});
             }
             
             address += 0x4;
