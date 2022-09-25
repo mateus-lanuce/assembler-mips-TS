@@ -27,9 +27,9 @@ function main(fileName: string) {
   try {
     const data = fs.readFileSync(fileName);
     const mips = new MipsAssembler(data);
-    const dataMips = mips.readRows.map((row, index) => mipsAdress(row, index))
+    //const dataMips = mips.readRows.map((row, index) => mipsAdress(row, index))
     
-    mipsMount(mips)
+    //mipsMount(mips)
   } catch (error) {
     console.log(error);
   }

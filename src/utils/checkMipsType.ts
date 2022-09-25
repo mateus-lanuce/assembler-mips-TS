@@ -1,9 +1,7 @@
 import {
-  TemporaryRegister,
-  StorageRegister,
   OperationCodes,
   FunctionCodes,
-} from "./enums";
+} from "./mipsValues";
 
 const operationsR = [
   "sll",
@@ -40,8 +38,13 @@ const operationsI = [
 ];
 const operationsJ = ["j", "jal"];
 
-export function mipsType(comand: String): string {
-  let operation = comand.split(" ");
+/**
+ * 
+ * @param command comando a ser verificado
+ * @returns  retorna o tipo da instrução
+ */
+export function mipsType(command: String): string {
+  let operation = command.split(" ");
   let operationCode = operation.filter((operation) => operation !== "");
   let pos: number;
   let type = " ";
