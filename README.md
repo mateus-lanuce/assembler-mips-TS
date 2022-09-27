@@ -1,4 +1,4 @@
-# Microserviço de autenticação com Typescript  📡
+# Montador (assembler) de assembly mips em Typescript  📡
 
-Montador caseiro de assembly mips
+##Utilizado OO, node e manipulação de arquivos e binarios em JS/TS
 
