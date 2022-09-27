@@ -15,6 +15,7 @@ export type I_Instruction = {
     rt: number;
     rs: number;
     immediate: number;
+    jumpInstruction: Boolean;
 };
 
 export type J_Instruction = {
@@ -25,7 +26,7 @@ export type J_Instruction = {
 type Instruction = {
     type: string;
     command: String;
-    instruction: R_Instruction | I_Instruction | J_Instruction | null;
+    instruction: R_Instruction | I_Instruction | J_Instruction;
     lineIndex: number;
 }
 
@@ -33,7 +34,7 @@ type Label = {
     label: String;
     command: String;
     commandType: string;
-    instruction: R_Instruction | I_Instruction | J_Instruction | null;
+    instruction: R_Instruction | I_Instruction | J_Instruction;
     adress: number;
     lineIndex: number;
 }
@@ -72,8 +73,7 @@ export class MipsAssembler extends MipsInstructions{
 
         console.log('labels: ', this.labels);
         console.log('instructions:', this._instructions);
-        
-        // console.log('adress:', this._lineAdress)
+
     }
     
     /**
@@ -92,10 +92,10 @@ export class MipsAssembler extends MipsInstructions{
 
                 const label: Label = { 
                     label: splitLabel[0], 
-                    instruction , 
-                    commandType , 
+                    instruction, 
+                    commandType, 
                     command: splitLabel[1].trim(), 
-                    adress: this._lineAdress + (index * 4) ,
+                    adress: this._lineAdress + (index * 4),
                     lineIndex: index
                 };
 
@@ -172,7 +172,8 @@ export class MipsAssembler extends MipsInstructions{
                     opcode: 0,
                     rs: 0,
                     rt: 0,
-                    immediate: 0
+                    immediate: 0,
+                    jumpInstruction: false
                 }
 
                 operation.opcode = this.operationCodes[commandSplit[0] as keyof typeof this.operationCodes];
@@ -180,9 +181,11 @@ export class MipsAssembler extends MipsInstructions{
                     operation.rs = this.registers[commandSplit[1] as keyof typeof this.registers];
                     operation.rt = this.registers[commandSplit[2] as keyof typeof this.registers];
                     operation.immediate = parseInt(commandSplit[3]);
-
+                    operation.jumpInstruction = operation.opcode === 4 || operation.opcode === 5 ? true : false;
+                    
                     //se for uma label pega o endereco
                     if(isNaN(operation.immediate)) {
+                        //pegar o endereco (linha da label - linha da instrucao - 1)
                         operation.immediate = this._labels.find(label => label.label === commandSplit[3])?.adress || 0;
                     }
 
@@ -195,7 +198,7 @@ export class MipsAssembler extends MipsInstructions{
             case 'j':
                 operation = {
                     opcode: 0,
-                    adress: 0
+                    adress: 0,          
                 }
 
                 operation.opcode = this.operationCodes[commandSplit[0] as keyof typeof this.operationCodes];
@@ -210,6 +213,88 @@ export class MipsAssembler extends MipsInstructions{
         }
 
         return operation;
+    }
+
+    /**
+     * transforma os valores em um array de inteiros onde cada posicao é uma linha
+     */
+    get int32BitsArray(): Int32Array {
+        //um array com os valores das instruçoes ordenado
+        let tempArray: Array<number> = [];
+        //passa por cada linha verifica de qual objeto faz parte e adiciona seu valor convertido a um array.
+        this.readRows.forEach((row, index) => {
+            const label = this._labels.filter(label => label.lineIndex === index)[0];
+            const instruction = this._instructions.filter(instruction => instruction.lineIndex === index)[0];
+
+            if(label) {
+                tempArray.push(this.convertInstructionBool(label, label.commandType));
+            } else {
+                tempArray.push(this.convertInstructionBool(instruction, instruction.type));
+            }
+
+        })
+        let int32 = new Int32Array(tempArray);
+
+        return int32;
+    }
+
+    /**
+     * converte o objeto de instrução em um numero com os bits da instruçao
+     * @param instruction 
+     * @param type
+     * @return {number}
+    */
+    convertInstructionBool(instruction: Instruction | Label, type: string  ): number {
+
+        let number = 0;
+        // console.log(instruction, type)
+
+        switch (type) {
+            case 'r':
+                let typeR = instruction.instruction as R_Instruction;
+                number = typeR.opcode << 26;
+                number = number | typeR.rs << 21;
+                number = number | typeR.rt << 16;
+                number = number | typeR.rd << 11;
+                number = number | typeR.shamt << 6;
+                number = number | typeR.funct;
+
+                break;
+        
+            case 'i':
+                let typeI = instruction.instruction as I_Instruction;
+
+                //pegar o endereco (linha da label - linha da instrucao - 1)
+                if(typeI.jumpInstruction) {
+                    typeI.immediate = this._labels.find(label => label.adress === typeI.immediate)?.lineIndex || 0;
+                    typeI.immediate = typeI.immediate - instruction.lineIndex - 1;
+                }
+
+                number = typeI.opcode << 26;
+                number = number | typeI.rs << 21;
+                number = number | typeI.rt << 16;
+
+                
+                if(typeI.jumpInstruction) {
+                    const mascara = 0b00000000000000001111111111111111;
+                    typeI.immediate = typeI.immediate & mascara;                       
+                }
+
+                number = number | typeI.immediate;
+                
+                break;
+
+            case 'j':
+                let typeJ = instruction.instruction as J_Instruction;
+                number = typeJ.opcode << 26;
+                number = number | (typeJ.adress / 4);
+
+                break;
+            default:
+                break;
+        }
+
+        return number;
     }
     
     get readRows() {

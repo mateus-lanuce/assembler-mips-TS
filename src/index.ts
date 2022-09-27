@@ -2,9 +2,6 @@ import * as fs from "node:fs";
 import { createInterface } from "node:readline";
 import readline from "readline";
 import { MipsAssembler } from "./Mips";
-import { mipsType } from "./utils/checkMipsType";
-import { mipsAdress } from "./utils/mipsAdress";
-import { mipsMount } from "./utils/mipsMount";
 
 const scanner = readline.createInterface({
   input: process.stdin,
@@ -27,7 +24,10 @@ function main(fileName: string) {
   try {
     const data = fs.readFileSync(fileName);
     const mips = new MipsAssembler(data);
-    //const dataMips = mips.readRows.map((row, index) => mipsAdress(row, index))
+
+    const Array32Bin: Int32Array = mips.int32BitsArray;
+
+    console.log(Array32Bin);
     
     //mipsMount(mips)
   } catch (error) {
