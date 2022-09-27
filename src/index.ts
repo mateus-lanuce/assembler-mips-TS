@@ -26,8 +26,15 @@ function main(fileName: string) {
     const mips = new MipsAssembler(data);
 
     const Array32Bin: Int32Array = mips.int32BitsArray;
+    
+    const Array32BinString: Array<string> = [];
+    Array32Bin.forEach((element) => {
+      Array32BinString.push(element.toString(2).padStart(32, "0"));
+    });
 
-    fs.writeFileSync("output.bin", Array32Bin);
+    fs.writeFileSync("output.txt", Array32BinString.join("\n"));
+
+    //fs.writeFileSync("output.bin", Array32Bin);
     
     //mipsMount(mips)
   } catch (error) {

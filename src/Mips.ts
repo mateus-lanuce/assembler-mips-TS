@@ -70,10 +70,6 @@ export class MipsAssembler extends MipsInstructions{
         this._readRows = Data.toString().split('\n'); //ler as linhas e separar por quebra de linha
         this.setLabels(this._readRows);
         this.setInstructions(this._readRows);
-
-        console.log('labels: ', this.labels);
-        console.log('instructions:', this._instructions);
-
     }
     
     /**

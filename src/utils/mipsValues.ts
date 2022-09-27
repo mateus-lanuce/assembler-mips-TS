@@ -38,7 +38,7 @@ export const Registers = {
 export const OperationCodes = {
     //r instructions
     sll: 0, 
-    slr: 0, 
+    srl: 0, 
     jr: 0, 
     mfhi: 0, 
     mflo: 0,
@@ -75,7 +75,7 @@ export const OperationCodes = {
 export const FunctionCodes = {
     //r instructions
     sll: 0, 
-    slr: 2, 
+    srl: 2, 
     jr: 8, 
     mfhi: 16, 
     mflo: 18,

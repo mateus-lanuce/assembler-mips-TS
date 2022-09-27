@@ -5,7 +5,7 @@ import {
 
 const operationsR = [
   "sll",
-  "slr",
+  "srl",
   "jr",
   "mfhi",
   "mflo",
