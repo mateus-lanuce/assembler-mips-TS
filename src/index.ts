@@ -27,7 +27,7 @@ function main(fileName: string) {
 
     const Array32Bin: Int32Array = mips.int32BitsArray;
 
-    console.log(Array32Bin);
+    fs.writeFileSync("output.bin", Array32Bin);
     
     //mipsMount(mips)
   } catch (error) {
